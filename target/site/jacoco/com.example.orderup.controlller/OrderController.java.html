@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderUp</a> &gt; <a href="index.source.html" class="el_package">com.example.orderup.controlller</a> &gt; <span class="el_source">OrderController.java</span></div><h1>OrderController.java</h1><pre class="source lang-java linenums">package com.example.orderup.controlller;
+
+import com.example.orderup.dto.OrderRequest;
+import com.example.orderup.dto.OrderResponseDto;
+import com.example.orderup.entity.OrderEntity;
+import com.example.orderup.service.OrderService;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
+@RequestMapping(&quot;/api/orders&quot;)
+public class OrderController {
+
+    private final OrderService orderService;
+
+<span class="fc" id="L21">    public OrderController(OrderService orderService) {</span>
+<span class="fc" id="L22">        this.orderService = orderService;</span>
+<span class="fc" id="L23">    }</span>
+
+    /**
+     * Place a single order for a product
+     */
+    @PostMapping
+    public ResponseEntity&lt;OrderResponseDto&gt; placeOrder(@Valid @RequestBody OrderRequest request) {
+<span class="fc" id="L30">        OrderEntity order = orderService.placeOrder(request.productId(), request.quantity());</span>
+<span class="fc" id="L31">        return ResponseEntity.status(HttpStatus.CREATED).body(mapToDto(order));</span>
+    }
+
+    /**
+     * Place multiple orders in a batch
+     */
+    @PostMapping(&quot;/batch&quot;)
+    public ResponseEntity&lt;List&lt;OrderResponseDto&gt;&gt; placeOrders(@RequestBody List&lt;@Valid OrderRequest&gt; requests) {
+<span class="nc" id="L39">        List&lt;OrderResponseDto&gt; responses = requests.stream()</span>
+<span class="nc" id="L40">                .map(req -&gt; mapToDto(orderService.placeOrder(req.productId(), req.quantity())))</span>
+<span class="nc" id="L41">                .collect(Collectors.toList());</span>
+
+<span class="nc" id="L43">        return ResponseEntity.status(HttpStatus.CREATED).body(responses);</span>
+    }
+
+    /**
+     * Maps internal OrderEntity to external OrderResponseDto
+     */
+    private OrderResponseDto mapToDto(OrderEntity order) {
+<span class="fc" id="L50">        return new OrderResponseDto(</span>
+<span class="fc" id="L51">                order.getId(),</span>
+<span class="fc" id="L52">                order.getQuantity(),</span>
+<span class="fc" id="L53">                order.getCreatedAt(),</span>
+<span class="fc" id="L54">                order.getStatus(),</span>
+                new OrderResponseDto.ProductDto(
+<span class="fc" id="L56">                        order.getProduct().getId(),</span>
+<span class="fc" id="L57">                        order.getProduct().getName(),</span>
+<span class="fc" id="L58">                        order.getProduct().getStock()</span>
+                )
+        );
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

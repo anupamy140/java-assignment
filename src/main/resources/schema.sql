@@ -1,0 +1,17 @@
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+
+CREATE TABLE products (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    stock INT NOT NULL
+);
+
+CREATE TABLE orders (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    quantity INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(50) NOT NULL,
+    product_id BIGINT,
+    CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products(id)
+);

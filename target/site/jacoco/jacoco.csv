@@ -1,0 +1,16 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+OrderUp,com.example.orderup.service,OrderService,11,64,2,4,2,17,2,4,0,3
+OrderUp,com.example.orderup.entity,OrderEntity,1,89,1,5,0,26,1,16,0,14
+OrderUp,com.example.orderup.entity,Product,2,134,2,14,0,36,2,22,0,16
+OrderUp,com.example.orderup.dto,OrderResponseDto,3,33,0,0,2,12,1,6,1,6
+OrderUp,com.example.orderup.dto,OrderResponseDto.ProductDto,3,21,0,0,2,8,1,4,1,4
+OrderUp,com.example.orderup.dto,ProductResponseDto,3,21,0,0,2,8,1,4,1,4
+OrderUp,com.example.orderup.dto,OrderRequest,0,9,0,0,0,1,0,1,0,1
+OrderUp,com.example.orderup.util,LoggingAspect,0,30,0,0,0,9,0,2,0,2
+OrderUp,com.example.orderup.controlller,OrderController,24,45,0,0,4,13,2,3,2,3
+OrderUp,com.example.orderup,OrderupApplication,5,3,0,0,2,1,1,1,1,1
+OrderUp,com.example.orderup.exception,GlobalExceptionHandler,1,52,1,1,0,16,1,4,0,4
+OrderUp,com.example.orderup.exception,NotFoundException,0,4,0,0,0,2,0,1,0,1
+OrderUp,com.example.orderup.exception,InsufficientStockException,0,4,0,0,0,2,0,1,0,1
+OrderUp,com.example.orderup.exception,ApiError,0,27,0,0,0,10,0,5,0,5
+OrderUp,com.example.orderup.controller,ProductController,36,43,0,0,10,12,3,4,3,4

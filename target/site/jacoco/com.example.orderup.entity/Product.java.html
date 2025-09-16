@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Product.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OrderUp</a> &gt; <a href="index.source.html" class="el_package">com.example.orderup.entity</a> &gt; <span class="el_source">Product.java</span></div><h1>Product.java</h1><pre class="source lang-java linenums">package com.example.orderup.entity;
+
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Entity
+@Table(name = &quot;products&quot;)
+public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private int stock;
+
+    @Version
+    private Long version;  // For optimistic locking
+
+<span class="fc" id="L25">    @OneToMany(mappedBy = &quot;product&quot;, cascade = CascadeType.ALL, orphanRemoval = true)</span>
+    private List&lt;OrderEntity&gt; orders = new ArrayList&lt;&gt;();
+
+<span class="fc" id="L28">    public Product() {</span>
+<span class="fc" id="L29">    }</span>
+
+<span class="fc" id="L31">    public Product(String name, int stock) {</span>
+<span class="fc" id="L32">        this.name = name;</span>
+<span class="fc" id="L33">        this.stock = stock;</span>
+<span class="fc" id="L34">    }</span>
+
+    public Long getId() {
+<span class="fc" id="L37">        return id;</span>
+    }
+
+    public String getName() {
+<span class="fc" id="L41">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L45">        this.name = name;</span>
+<span class="fc" id="L46">    }</span>
+
+    public int getStock() {
+<span class="fc" id="L49">        return stock;</span>
+    }
+
+    public void setStock(int stock) {
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (stock &lt; 0) {</span>
+<span class="fc" id="L54">            throw new IllegalArgumentException(&quot;Stock cannot be negative&quot;);</span>
+        }
+<span class="fc" id="L56">        this.stock = stock;</span>
+<span class="fc" id="L57">    }</span>
+
+    public Long getVersion() {
+<span class="fc" id="L60">        return version;</span>
+    }
+
+    public List&lt;OrderEntity&gt; getOrders() {
+<span class="fc" id="L64">        return orders;</span>
+    }
+
+    public void setOrders(List&lt;OrderEntity&gt; orders) {
+<span class="fc" id="L68">        this.orders = orders;</span>
+<span class="fc" id="L69">    }</span>
+
+    public void addOrder(OrderEntity order) {
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (order == null) {</span>
+<span class="fc" id="L73">            throw new IllegalArgumentException(&quot;Order cannot be null&quot;);</span>
+        }
+<span class="fc" id="L75">        orders.add(order);</span>
+<span class="fc" id="L76">        order.setProduct(this);</span>
+<span class="fc" id="L77">    }</span>
+
+    public void removeOrder(OrderEntity order) {
+<span class="fc" id="L80">        orders.remove(order);</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (order != null) {</span>
+<span class="fc" id="L82">            order.setProduct(null);</span>
+        }
+<span class="fc" id="L84">    }</span>
+
+    // New helper method: checks if enough stock is available
+    public boolean hasSufficientStock(int quantity) {
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        return stock &gt;= quantity;</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (this == o) return true;</span>
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (!(o instanceof Product)) return false;</span>
+<span class="fc" id="L95">        Product other = (Product) o;</span>
+<span class="pc bpc" id="L96" title="1 of 4 branches missed.">        return id != null &amp;&amp; Objects.equals(id, other.getId());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L101">        return Objects.hash(id);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L106">        return &quot;Product{&quot; +</span>
+                &quot;id=&quot; + id +
+                &quot;, name='&quot; + name + '\'' +
+                &quot;, stock=&quot; + stock +
+                &quot;, version=&quot; + version +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
